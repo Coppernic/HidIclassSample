@@ -8,22 +8,84 @@ Hid Iclass Sample Project
 
 This sample shows how to use the Hid Iclass reader on C-One².
 
+## Prerequisites
+Core Services sall be installed on your device. PLease install the last version on F-Droid if it is not installed.
 
-## Download
+## Set Up
 
 Install in your build.gradle:
 
 ```
-dependencies {
+repositories {
+    jcenter()
+    maven { url 'https://artifactory.coppernic.fr/artifactory/libs-release' }
+}
 
+dependencies {
+// [...]
+    implementation 'fr.coppernic.sdk.cpcutils:CpcUtilsLib:6.18.1'
+    implementation 'fr.coppernic.sdk.core:CpcCore:1.8.6'
+    implementation 'fr.coppernic.sdk.hid.iclassProx:CpcHidIClassProx:2.0.0'
+// [...]
 }
 ```
 
-## Usage
+### Power management
 
-Provide instructions on how to use and integrate the library into a project.
+ * Use Power Single
 
-If there's some special pieces for testing (ie Mocks) explain those here as well.
+```java
+
+   ConePeripheral.RFID_HID_ICLASSPROX_GPIO.descriptor.power(context, on)
+
+```
+
+
+### Reader initialization
+
+#### Create reader object
+ * Declare a Reader object
+
+```java
+lateinit var reader: Reader
+```
+ * Create a listener 
+ 
+```java
+private val instanceListener= object: InstanceListener<Reader>{
+        override fun onDisposed(p0: Reader) {
+        }
+
+        override fun onCreated(hidReader: Reader) {
+            Timber.d("hid reader instance created")
+            reader = hidReader
+            if(!completableEmitter.isDisposed) {
+                completableEmitter.onComplete()
+            }
+        }
+    }
+```
+ * Instantiate it after power up:
+
+```java
+Reader.getInstance(context, instanceListener)
+```
+
+
+### Open reader
+```java
+ var res = reader.open(CpcDefinitions.HID_ICLASS_PROX_READER_PORT, BaudRate.B9600)
+```
+
+## Read tag
+```java
+  val res = reader.samCommandScanFieldForCard(frameProtocolList, card)
+  if(res != ErrorCodes.ER_OK){
+  	Timber.d("error read")
+  }else{
+ 	//get your data in card object
+  }
+```
 
 ## License
 

@@ -19,9 +19,9 @@ copper {
 apply plugin: 'fr.coppernic.android'
 
 repositories {
-    maven { url 'http://arti-01:8081/artifactory/libs-release' }
-    //google()
-    //jcenter()
+    maven { url 'https://artifactory.coppernic.fr/artifactory/libs-release' }
+    google()
+    jcenter()
 }
 
 android {
