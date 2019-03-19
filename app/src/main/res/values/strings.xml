@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">App</string>
+    <string name="app_name">Hid Iclass Sample</string>
+    <string name="action_clear">Clear</string>
 </resources>

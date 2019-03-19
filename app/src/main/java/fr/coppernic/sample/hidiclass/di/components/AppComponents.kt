@@ -2,11 +2,12 @@ package fr.coppernic.sample.hidiclass.di.components
 
 import dagger.Component
 import fr.coppernic.sample.hidiclass.di.modules.ContextModule
+import fr.coppernic.sample.hidiclass.di.modules.HomePresenterModule
 import fr.coppernic.sample.hidiclass.home.HomeActivity
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [(ContextModule::class)])
+@Component(modules = [(ContextModule::class), HomePresenterModule::class])
 interface AppComponents {
 
     fun inject(homeActivity: HomeActivity)
