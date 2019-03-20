@@ -1,6 +1,5 @@
 package fr.coppernic.sample.hidiclass.home
 
-import android.app.AlarmManager
 import android.content.Intent
 import android.media.AudioManager
 import android.media.ToneGenerator
@@ -35,7 +34,6 @@ class HomeActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
     lateinit var adapter: TagAdapter
 
     private var tg: ToneGenerator? = null
-    private var alarmManager: AlarmManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
