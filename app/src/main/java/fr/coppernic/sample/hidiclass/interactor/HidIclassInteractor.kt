@@ -76,7 +76,7 @@ class HidIclassInteractor @Inject constructor() {
     }
 
     fun continuousRead(frameProtocolList: Array<FrameProtocol>): Flowable<Card>{
-        return Flowable.interval(300, TimeUnit.MILLISECONDS, Schedulers.single())
+        return Flowable.interval(100, TimeUnit.MILLISECONDS, Schedulers.single())
                 .onBackpressureLatest()
                 .flatMapSingle ({
                     return@flatMapSingle read(frameProtocolList).onErrorResumeNext(Single.just(Card()))

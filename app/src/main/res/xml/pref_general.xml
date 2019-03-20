@@ -1,0 +1,17 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="pref_key_beep_enable"
+        android:summary="@string/pref_description_beep_summary"
+        android:title="@string/pref_description_beep_title" />
+    <MultiSelectListPreference
+        android:id="@+id/multi_select_list_preference_protocol"
+        android:dialogTitle="@string/protocol"
+        android:key="@string/pref_protocol_key"
+        android:maxLines="1"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:title="@string/protocol" />
+
+</PreferenceScreen>

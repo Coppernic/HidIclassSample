@@ -1,11 +1,13 @@
 package fr.coppernic.sample.hidiclass.home
 
 import fr.coppernic.sample.hidiclass.interactor.HidIclassInteractor
+import fr.coppernic.sample.hidiclass.settings.Settings
 import fr.coppernic.sdk.hid.iclassProx.FrameProtocol
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Named
 
 class HomePresenterImpl @Inject constructor() : HomePresenter{
 
@@ -13,6 +15,10 @@ class HomePresenterImpl @Inject constructor() : HomePresenter{
 
     @Inject
     lateinit var hidIclassInteractor: HidIclassInteractor
+
+    @Inject
+    @field:Named("SETTINGS")
+    lateinit var settings: Settings
 
     override fun setUp(view: HomeView) {
         this.view = view
@@ -30,16 +36,26 @@ class HomePresenterImpl @Inject constructor() : HomePresenter{
     }
 
     override fun read() {
-        hidIclassInteractor.disposables.add(hidIclassInteractor.continuousRead(FrameProtocol.values())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    if(it.cardSerialNumber != null) {
-                        view.displayTags(it)
-                    }
-                },{
-                    Timber.d(it.message!!)
-                }))
+
+        if (settings.getProtocolList().isEmpty()) {
+            view.showError("No Protocol Selected")
+            return
+        }else {
+            val protocolList = settings.getProtocolList().map { FrameProtocol.valueOf(it) }
+            hidIclassInteractor.disposables.add(hidIclassInteractor.continuousRead(protocolList.toTypedArray())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        if (it.cardSerialNumber != null) {
+                            if (settings.isBeepEnabled()) {
+                                view.playSound()
+                            }
+                            view.displayTags(it)
+                        }
+                    }, {
+                        Timber.d(it.message!!)
+                    }))
+        }
     }
 
     override fun stop() {
