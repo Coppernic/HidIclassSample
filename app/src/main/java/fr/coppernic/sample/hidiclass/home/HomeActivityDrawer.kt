@@ -4,6 +4,8 @@ import android.content.Intent
 import android.media.AudioManager
 import android.media.ToneGenerator
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -22,7 +24,9 @@ import fr.coppernic.sdk.hid.iclassProx.Card
 import kotlinx.android.synthetic.main.activity_main_drawer.*
 import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 import kotlinx.android.synthetic.main.content_main_activity_drawer.*
+import timber.log.Timber
 import javax.inject.Inject
+
 
 class HomeActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView {
 
@@ -55,8 +59,8 @@ class HomeActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         }
 
 
-        tg = ToneGenerator(AudioManager.STREAM_SYSTEM,
-                ToneGenerator.MAX_VOLUME - ToneGenerator.MAX_VOLUME * 10 / 100)
+        /*tg = ToneGenerator(AudioManager.STREAM_SYSTEM,
+                ToneGenerator.MAX_VOLUME - ToneGenerator.MAX_VOLUME * 10 / 100)*/
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
@@ -128,12 +132,6 @@ class HomeActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         }
     }
 
-    override fun onDestroy() {
-        tg?.release()
-        tg = null
-        super.onDestroy()
-    }
-
     override fun displayTags(card: Card) {
         adapter.updateItem(Tag(card))
     }
@@ -151,6 +149,22 @@ class HomeActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
     }
 
     override fun playSound() {
-        tg?.startTone(ToneGenerator.TONE_PROP_BEEP, 100)
+        try {
+            if (tg == null) {
+                tg = ToneGenerator(AudioManager.STREAM_SYSTEM,
+                        ToneGenerator.MAX_VOLUME - ToneGenerator.MAX_VOLUME * 10 / 100)
+            }
+            tg?.startTone(ToneGenerator.TONE_PROP_BEEP, 100)
+            val handler = Handler(Looper.getMainLooper())
+            handler.postDelayed({
+                if (tg != null) {
+                    tg!!.release()
+                    tg = null
+                }
+            }, 200)
+        } catch (e: Exception) {
+            Timber.d("Exception while playing sound:$e")
+        }
+
     }
 }

@@ -75,11 +75,30 @@ class HidIclassInteractor @Inject constructor() {
 
     }
 
-    fun continuousRead(frameProtocolList: Array<FrameProtocol>): Flowable<Card>{
+    fun readLF(): Single<Card>{
+        return Single.create{
+            val card = Card()
+            val res = reader.samCommandScanAndProcessMedia(card);
+            if(res != ErrorCodes.ER_OK){
+                Timber.d("error read")
+                notifyError(it, Throwable(res.description))
+            }else{
+                notifySuccess(it, card)
+            }
+
+        }
+
+    }
+
+    fun continuousRead(frameProtocolList: Array<FrameProtocol>, isHf: Boolean): Flowable<Card>{
         return Flowable.interval(100, TimeUnit.MILLISECONDS, Schedulers.single())
                 .onBackpressureLatest()
                 .flatMapSingle ({
-                    return@flatMapSingle read(frameProtocolList).onErrorResumeNext(Single.just(Card()))
+                    if(!isHf){
+                        return@flatMapSingle readLF().onErrorResumeNext(Single.just(Card()))
+                    }else {
+                        return@flatMapSingle read(frameProtocolList).onErrorResumeNext(Single.just(Card()))
+                    }
                 },false,1)
     }
 

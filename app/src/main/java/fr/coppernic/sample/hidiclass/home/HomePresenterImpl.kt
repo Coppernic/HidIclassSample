@@ -9,7 +9,7 @@ import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Named
 
-class HomePresenterImpl @Inject constructor() : HomePresenter{
+class HomePresenterImpl @Inject constructor() : HomePresenter {
 
     lateinit var view: HomeView
 
@@ -23,13 +23,13 @@ class HomePresenterImpl @Inject constructor() : HomePresenter{
     override fun setUp(view: HomeView) {
         this.view = view
         val disposable = hidIclassInteractor.power(true)
-                .flatMapCompletable{hidIclassInteractor.setUp()}
+                .flatMapCompletable { hidIclassInteractor.setUp() }
                 .andThen(hidIclassInteractor.open())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     view.showFab(true)
-                },{
+                }, {
                     view.showError(it.message!!)
                     view.showFab(false)
                 })
@@ -37,12 +37,12 @@ class HomePresenterImpl @Inject constructor() : HomePresenter{
 
     override fun read() {
 
-        if (settings.getProtocolList().isEmpty()) {
+        if (settings.getProtocolList().isEmpty() && settings.isHfEnabled()) {
             view.showError("No Protocol Selected")
             return
-        }else {
+        } else {
             val protocolList = settings.getProtocolList().map { FrameProtocol.valueOf(it) }
-            hidIclassInteractor.disposables.add(hidIclassInteractor.continuousRead(protocolList.toTypedArray())
+            hidIclassInteractor.disposables.add(hidIclassInteractor.continuousRead(protocolList.toTypedArray(), settings.isHfEnabled())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({

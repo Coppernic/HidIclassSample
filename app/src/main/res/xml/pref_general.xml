@@ -5,9 +5,16 @@
         android:key="pref_key_beep_enable"
         android:summary="@string/pref_description_beep_summary"
         android:title="@string/pref_description_beep_title" />
+    <SwitchPreference
+        android:defaultValue="true"
+        android:summaryOff="@string/LFProx"
+        android:summaryOn ="@string/HFIclass"
+        android:key="@string/pref_Frequency_key"
+        android:title="@string/Frequency" />
     <MultiSelectListPreference
         android:id="@+id/multi_select_list_preference_protocol"
         android:dialogTitle="@string/protocol"
+        android:dependency="@string/pref_Frequency_key"
         android:key="@string/pref_protocol_key"
         android:maxLines="1"
         android:selectAllOnFocus="true"
