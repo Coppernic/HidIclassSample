@@ -64,5 +64,12 @@ class HomePresenterImpl @Inject constructor() : HomePresenter {
 
     override fun dispose() {
         hidIclassInteractor.dispose()
+        val d = hidIclassInteractor.power(false)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                }, {
+
+                })
     }
 }

@@ -132,6 +132,11 @@ class HomeActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
         }
     }
 
+    override fun onStop() {
+        presenter.dispose()
+        super.onStop()
+    }
+
     override fun displayTags(card: Card) {
         adapter.updateItem(Tag(card))
     }
