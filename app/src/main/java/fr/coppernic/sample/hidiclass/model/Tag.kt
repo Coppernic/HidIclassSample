@@ -10,6 +10,8 @@ data class Tag (val card: Card, var count: Int = 1){
 
         other as Tag
 
+        if(card.cardNumber >0 && card.cardNumber == other.card.cardNumber) return true
+        if(card.cardSerialNumber == null) return false
         if(Arrays.equals(card.cardSerialNumber, other.card.cardSerialNumber)) return true
 
         return false

@@ -46,7 +46,7 @@ class HomePresenterImpl @Inject constructor() : HomePresenter {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({
-                        if (it.cardSerialNumber != null) {
+                        if (it.cardSerialNumber != null || it.cardNumber > 0 ) {
                             if (settings.isBeepEnabled()) {
                                 view.playSound()
                             }

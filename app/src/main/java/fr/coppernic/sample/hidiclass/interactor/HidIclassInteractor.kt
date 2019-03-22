@@ -78,7 +78,7 @@ class HidIclassInteractor @Inject constructor() {
     fun readLF(): Single<Card>{
         return Single.create{
             val card = Card()
-            val res = reader.samCommandScanAndProcessMedia(card);
+            val res = reader.samCommandScanAndProcessMedia(card)
             if(res != ErrorCodes.ER_OK){
                 Timber.d("error read")
                 notifyError(it, Throwable(res.description))

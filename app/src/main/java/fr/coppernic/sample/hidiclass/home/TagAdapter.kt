@@ -11,6 +11,7 @@ import fr.coppernic.sdk.utils.core.CpcBytes
 import kotlinx.android.synthetic.main.item_tag.view.*
 import timber.log.Timber
 
+
 class TagAdapter(private val tags: MutableList<Tag>) : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -44,7 +45,11 @@ class TagAdapter(private val tags: MutableList<Tag>) : RecyclerView.Adapter<View
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvTag.text = CpcBytes.byteArrayToString(tags[position].card.cardSerialNumber)
+        if(tags[position].card.cardNumber > 0) {//LF
+            holder.tvTag.text = tags[position].card.cardNumber.toString()
+        } else {// HF
+            holder.tvTag.text = CpcBytes.byteArrayToString(tags[position].card.cardSerialNumber)
+        }
         holder.tvCount.text = tags[position].count.toString()
     }
 }
