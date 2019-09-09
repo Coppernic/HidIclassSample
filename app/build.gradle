@@ -46,7 +46,9 @@ android {
         }
     }
 
-
+    packagingOptions{
+        exclude 'META-INF/lib_release.kotlin_module'
+    }
 }
 
 dependencies {
@@ -69,8 +71,8 @@ dependencies {
     kapt "androidx.lifecycle:lifecycle-compiler:2.1.0-alpha02"
 
     // Coppernic
-    implementation 'fr.coppernic.sdk.cpcutils:CpcUtilsLib:6.18.1'
-    implementation 'fr.coppernic.sdk.core:CpcCore:1.8.6'
+    implementation 'fr.coppernic.sdk.cpcutils:CpcUtilsLib:6.18.4'
+    implementation 'fr.coppernic.sdk.core:CpcCore:1.8.14'
     implementation 'fr.coppernic.sdk.hid.iclassProx:CpcHidIClassProx:2.0.1'
 
     // Ui
