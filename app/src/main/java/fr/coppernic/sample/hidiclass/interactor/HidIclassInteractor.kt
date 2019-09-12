@@ -1,9 +1,9 @@
 package fr.coppernic.sample.hidiclass.interactor
 
 import android.content.Context
+import fr.coppernic.sdk.core.Defines
 import fr.coppernic.sdk.hid.iclassProx.*
 import fr.coppernic.sdk.power.impl.cone.ConePeripheral
-import fr.coppernic.sdk.utils.core.CpcDefinitions
 import fr.coppernic.sdk.utils.core.CpcResult
 import fr.coppernic.sdk.utils.io.InstanceListener
 import io.reactivex.*
@@ -46,7 +46,7 @@ class HidIclassInteractor @Inject constructor() {
 
     fun open(): Completable {
         return Completable.create {
-            var res = reader.open(CpcDefinitions.HID_ICLASS_PROX_READER_PORT, BaudRate.B9600)
+            var res = reader.open(Defines.SerialDefines.HID_ICLASS_PROX_READER_PORT, BaudRate.B9600)
             if(res != ErrorCodes.ER_OK){
                 it.onError( Throwable(res.description))
             }else {
