@@ -1,14 +1,12 @@
 package fr.coppernic.template.robolectric
 
 import fr.bipi.tressence.console.SystemLogTree
-import fr.coppernic.sdk.cpcutils.BuildConfig
 import org.awaitility.Awaitility.await
 import org.junit.AfterClass
 import org.junit.Assert.assertTrue
 import org.junit.BeforeClass
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
-import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowLog
 import timber.log.Timber
 import java.util.concurrent.atomic.AtomicBoolean
@@ -20,7 +18,6 @@ import java.util.concurrent.atomic.AtomicBoolean
  * Robolectric tests are done in a single thread !
  */
 @RunWith(RobolectricTestRunner::class)
-@Config(constants = BuildConfig::class, sdk = [25])
 abstract class RobolectricTest {
 
     companion object {
